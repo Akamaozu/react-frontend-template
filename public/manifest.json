@@ -1,0 +1,16 @@
+{
+  "name": "react frontend template",
+  "short_name": "react template",
+  "description": "react frontend template by designbymobius",
+  "icons": [
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "orange",
+  "background_color": "#ffffff"
+}
