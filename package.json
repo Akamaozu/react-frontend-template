@@ -1,6 +1,6 @@
 {
-  "name": "sparkpocketjoy-frontend",
-  "version": "0.1.0",
+  "name": "react-frontend-template",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -25,7 +25,6 @@
   },
   "cacheDirectories": [
     "node_modules",
-    "src/internals/node_modules",
     "build"
   ],
   "eslintConfig": {
