@@ -1,4 +1,4 @@
-const utils = require('../../utils')
+const utils = require('../../../utils')
 
 let app_html
 let getting_app_html = false

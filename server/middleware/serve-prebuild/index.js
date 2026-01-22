@@ -1,5 +1,5 @@
 const path = require('path')
-const utils = require('../../utils')
+const utils = require('../../../utils')
 
 let prebuild_html
 let getting_prebuild_html

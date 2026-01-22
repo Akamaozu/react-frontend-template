@@ -1,6 +1,6 @@
 const md5 = require('md5')
 const mime = require('mimetype')
-const utils = require('../../utils')
+const utils = require('../../../utils')
 
 module.exports = maybe_serve_from_dir
 
