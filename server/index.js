@@ -1,3 +1,5 @@
+
+const compression = require('compression')
 const utils = require('../utils')
 const middleware = require('./middleware')
 
@@ -5,6 +7,9 @@ utils.env.load()
 
 const server = utils.server.create()
 const port = process.env.PORT ?? 3000
+
+server.use( compression() )
+console.log( 'action=setup-middleware behavior=compress-http-responses encodings=gzip,brotli,deflate' )
 
 server.use( middleware.build_app )
 
