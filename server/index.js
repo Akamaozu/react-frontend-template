@@ -1,4 +1,4 @@
-const utils = require('./utils')
+const utils = require('../utils')
 const middleware = require('./middleware')
 
 utils.env.load()
