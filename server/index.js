@@ -1,4 +1,3 @@
-
 const compression = require('compression')
 const utils = require('../utils')
 const middleware = require('./middleware')
@@ -9,9 +8,10 @@ const server = utils.server.create()
 const port = process.env.PORT ?? 3000
 
 server.use( compression() )
-console.log( 'action=setup-middleware behavior=compress-http-responses encodings=gzip,brotli,deflate' )
+console.log( 'action=setup-middleware behavior=compress-http-response encodings=gzip,brotli,deflate' )
 
 server.use( middleware.build_app )
+console.log( 'action=setup-middleware behavior=build-react-app' )
 
 const dirs_to_serve = [ './public', './build' ]
 server.use( middleware.serve_from_dir( dirs_to_serve ) )
