@@ -1,4 +1,5 @@
 const compression = require('compression')
+const os = require('node:os')
 const utils = require('../utils')
 const middleware = require('./middleware')
 
@@ -21,7 +22,19 @@ server.get( '*', middleware.serve_prebuild, middleware.serve_app )
 console.log( 'action=setup-route-handler path=ALL method=GET behavior=serve-app-build-or-prebuild' )
 
 server.listen( port, () => {
-  console.log(`action=server-listen port=${ port }`)
+  const non_internal_ip4_interfaces = Object.values( os.networkInterfaces() )
+    .flat()
+    .filter(interface => {
+      if (interface.internal) return false
+      if (
+        interface.family != 'IPv4'
+        && interface.family != 4
+      ) return false
+
+      return true
+    })
+
+  console.log(`action=server-listen port=${ port }${ non_internal_ip4_interfaces.length > 0 && ` local=http://${ non_internal_ip4_interfaces[0].address }:${ port }` }`)
 
   middleware.build_app.utils.async_check_and_maybe_build_app()
   console.log( 'action=ensure-react-app-build-exists' )
