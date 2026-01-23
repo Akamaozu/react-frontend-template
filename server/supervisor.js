@@ -14,15 +14,17 @@ console.log(`action=start-server protocols=http env=${server_env}`)
 
 if (server_env === 'production') {
   const supervisor = supe()
+  const citizen_name = 'prod-server'
 
-  supervisor.register( 'prod-server', path.join(__dirname, './index'))
+  supervisor.register( citizen_name, path.join(__dirname, './index'))
   
-  supervisor.hook.add( 'citizen-starting-env', 'whitelist-prod-server-env', (env, citizen_name) => {
-    if (citizen_name !== 'prod-server') return env
+  supervisor.hook.add( 'citizen-starting-env', 'whitelist-prod-server-env', (start_env, citizen_started) => {
+    if (citizen_started !== citizen_name) return start_env
 
     return {
       ENV_NAME,
       PORT: process.env.PORT,
+      SUPE_CITIZEN_NAME: start_env.SUPE_CITIZEN_NAME,
     }
   })
 
