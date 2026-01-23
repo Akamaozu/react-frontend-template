@@ -34,7 +34,15 @@ server.listen( port, () => {
       return true
     })
 
-  console.log(`action=server-listen port=${ port }${ non_internal_ip4_interfaces.length > 0 && ` local=http://${ non_internal_ip4_interfaces[0].address }:${ port }` }`)
+  const log_entry_items = [
+    'action=server-listen',
+    `port=${ port }`,
+    `local=http://localhost:${ port }`,
+  ]
+
+  if (non_internal_ip4_interfaces.length > 0) log_entry_items.push( `network=http://${ non_internal_ip4_interfaces[0].address }:${ port }` )
+
+  console.log( log_entry_items.join(' ') )
 
   middleware.build_app.utils.async_check_and_maybe_build_app()
   console.log( 'action=ensure-react-app-build-exists' )
