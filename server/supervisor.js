@@ -10,15 +10,17 @@ const server_env = ENV_NAME?.toLowerCase().trim() === 'production'
   ? 'production'
   : 'development'
 
-console.log(`action=start-server protocols=http env=${server_env}`)
+console.log( `action=start-server protocols=http env=${server_env}` )
 
 if (server_env === 'production') {
   const supervisor = supe()
   const citizen_name = 'prod-server'
+  const max_crashes = 3
+  const max_crash_duration_mins = 1
 
-  supervisor.register( citizen_name, path.join(__dirname, './index'))
+  supervisor.register( citizen_name, path.join(__dirname, './index'), { retries: max_crashes, duration: max_crash_duration_mins })
   
-  supervisor.hook.add( 'citizen-starting-env', 'whitelist-prod-server-env', (start_env, citizen_started) => {
+  supervisor.hook.add( 'citizen-starting-env', `whitelist-${citizen_name}-env`, (start_env, citizen_started) => {
     if (citizen_started !== citizen_name) return start_env
 
     return {
@@ -27,8 +29,17 @@ if (server_env === 'production') {
       SUPE_CITIZEN_NAME: start_env.SUPE_CITIZEN_NAME,
     }
   })
+  console.log( `action=whitelist-startup-env citizen=${citizen_name}` )
 
-  supervisor.start('prod-server');
+  supervisor.hook.add( 'citizen-excessive-crash', 'shutdown-server-supervisor', crashed_citizen => {
+    if (crashed_citizen.name !== citizen_name) return
+
+    console.log( `action=schedule-restart citizen=${citizen_name} reason="crashed excessively (${max_crashes} crashes in ${max_crash_duration_mins} min)"` )
+    process.exit()
+  })
+  console.log( `action=setup-excessive-crash-behavior citizen=${citizen_name} behavior=shutdown crashes=${ max_crashes } duration=${ max_crash_duration_mins }min` )
+
+  supervisor.start('prod-server')
 }
 
 else {
