@@ -1,8 +1,8 @@
 const path = require('path')
-const utils = require('../')
+const async_path_exists = require('../fs/path-exists')
 
 module.exports = async_is_built
 
 async function async_is_built() {
-  return utils.fs.async_path_exists( path.join(__dirname, '../../build/index.html') )
+  return async_path_exists( path.join(__dirname, '../../build/index.html') )
 }
