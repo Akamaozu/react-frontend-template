@@ -25,11 +25,12 @@ if (server_env === 'production') {
 
     return {
       ENV_NAME,
+      PATH: process.env.PATH,
       PORT: process.env.PORT,
       SUPE_CITIZEN_NAME: start_env.SUPE_CITIZEN_NAME,
     }
   })
-  console.log( `action=whitelist-startup-env citizen=${citizen_name}` )
+  console.log( `action=whitelist-startup-env citizen=${citizen_name} permitted=ENV_NAME,PATH,PORT,SUPE_CITIZEN_NAME` )
 
   supervisor.hook.add( 'citizen-excessive-crash', 'shutdown-server-supervisor', crashed_citizen => {
     if (crashed_citizen.name !== citizen_name) return
